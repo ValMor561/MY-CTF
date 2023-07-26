@@ -1,0 +1,25 @@
+version: '3'
+services:
+  php-apache:
+    build:
+      context:  ./Docker/php
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - 80:80
+    volumes:
+      - './Src:/var/www/html'
+      - './Docker/php/000-default.conf:/etc/apache2/sites-available/000-default.conf'
+      
+  mysql:
+    build:
+      context: ./Docker/mysql
+      dockerfile: Dockerfile
+      args:
+      - MYSQL_ROOT_PASSWORD=Very_strong_pswd
+      - MYSQL_DATABASE=fuel
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+    volumes:
+      - './Docker/mysql/my.cnf:/etc/my.cnf'
